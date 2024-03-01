@@ -1,0 +1,759 @@
+{
+	"info": {
+		"_postman_id": "521433fd-ab71-413d-86be-24079a65f817",
+		"name": "VacQ",
+		"description": "Backend API for reserving Vaccine job timeslots, including hospitals, users, and bookings.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29523471"
+	},
+	"item": [
+		{
+			"name": "Hospitals",
+			"item": [
+				{
+					"name": "Get All Hospitals",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"const response = pm.response.json();\r",
+									"console.log(response);\r",
+									"\r",
+									"pm.test(\"There are some hospitals!!\", () => {\r",
+									"    pm.expect(response.count).to.be.above(0);\r",
+									"});\r",
+									"\r",
+									"postman.setNextRequest(\"Create New Hospital\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/v1/hospitals",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"hospitals"
+							]
+						},
+						"description": "Fetch all hospitals from database."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Single Hospital",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"postman.setNextRequest(\"Update Single Hospital\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/v1/hospitals/:hospital_ID",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"hospitals",
+								":hospital_ID"
+							],
+							"variable": [
+								{
+									"key": "hospital_ID",
+									"value": "{{global_hospital_ID}}"
+								}
+							]
+						},
+						"description": "\nThis endpoint retrieves information about a specific hospital with the ID 1. The response will be in JSON format with a success status and an optional message.\n\n### Request\n\n- Method: GET\n- URL: `localhost:5000/api/v1/hospitals/1`\n\n### Response\n\n- Status: 200\n- Content-Type: application/json\n- Body:\n  ```json\n  {\n      \"success\": true,\n      \"msg\": \"\"\n  }\n  ```\n"
+					},
+					"response": []
+				},
+				{
+					"name": "Create New Hospital",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"const response = pm.response.json();\r",
+									"const new_hospital_id = response.data.id;\r",
+									"\r",
+									"// console.log(new_hospital);\r",
+									"pm.globals.set(\"global_hospital_ID\",new_hospital_id);\r",
+									"\r",
+									"postman.setNextRequest(\"Get Single Hospital\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Type",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\" : \"{{$randomFullName}}\" ,\r\n    \"address\" : \"Hospital\",\r\n    \"district\": \"Hacker\",\r\n    \"province\": \"Nonthaburi\",\r\n    \"postalcode\" : \"10110\",\r\n    \"tel\" : \"02-8369999\",\r\n    \"region\" : \"กรุงเทพมหานคร (Bangkok)\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/hospitals",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"hospitals"
+							]
+						},
+						"description": "This endpoint allows you to create a new hospital by sending a POST request to the specified URL. Upon successful execution, the endpoint returns a JSON response with a status code of 200, indicating that the hospital addition was successful.\n\nThe response body includes a \"success\" key, which will be true if the operation was successful, and an empty \"msg\" key.\n\nExample:\n\n``` json\n{\n  \"success\": true,\n  \"msg\": \"\"\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Single Hospital",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"postman.setNextRequest(\"Delete Single Hospital\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Type",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"World Medical\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/hospitals/:hospital_ID",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"hospitals",
+								":hospital_ID"
+							],
+							"variable": [
+								{
+									"key": "hospital_ID",
+									"value": "{{global_hospital_ID}}"
+								}
+							]
+						},
+						"description": "This endpoint allows you to update the details of a specific hospital by sending an HTTP PUT request to the specified URL. Upon a successful execution, the server returns a JSON response with a status code of 200, along with a \"success\" boolean indicating the success status and an optional \"msg\" field for any additional message."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Single Hospital",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"postman.setNextRequest(null);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/v1/hospitals/:hospital_ID",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"hospitals",
+								":hospital_ID"
+							],
+							"variable": [
+								{
+									"key": "hospital_ID",
+									"value": "{{global_hospital_ID}}"
+								}
+							]
+						},
+						"description": "\n# Hospital Deletion\nThis endpoint sends an HTTP DELETE request to localhost:5000/api/v1/hospitals/1 to delete a hospital with the ID 1.\n\n### Response\n- Status: 200\n- Content-Type: application/json\n- Body:\n  ```json\n  {\n      \"success\": true,\n      \"msg\": \"\"\n  }\n  ```\n  The response indicates the success of the deletion operation with the \"success\" field set to true.\n"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Vaccine Centers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/v1/hospitals/vacCenters",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"hospitals",
+								"vacCenters"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Hospital CRUD functionality"
+		},
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Type",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"User2\",\r\n    \"email\": \"user2@gmail.com\",\r\n    \"password\": \"12345678\",\r\n    \"role\" : \"user\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/auth/register",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"TOKEN\",pm.response.json().token)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Type",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\" : \"john@gmail.com\",\r\n    \"password\" : \"12345679\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/auth/login",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Logged In User with Token",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Type",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ZDVmNDVkYTBmNTMxNDQyYmJjMWVlNyIsImlhdCI6MTcwODUyMjU5MiwiZXhwIjoxNzExMTE0NTkyfQ.V9m8eyW6hoZLkbmuFxotWN7pYjOg7A927tD8Ylq_2FM",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/api/v1/auth/me",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"TOKEN\",null)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/v1/auth/logout",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Appointments",
+			"item": [
+				{
+					"name": "Get All Appts",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/v1/appointments",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"appointments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Appt for Hospital",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/v1/hospitals/65d9eec3183b569168984587/appointments",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"hospitals",
+								"65d9eec3183b569168984587",
+								"appointments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get ONE Appt",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/v1/appointments/65d999d490b7f1390d24cb25",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"appointments",
+								"65d999d490b7f1390d24cb25"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Hospital",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/v1/hospitals/65d9eec3183b569168984587",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"hospitals",
+								"65d9eec3183b569168984587"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add ONE Appt",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Type",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"apptDate\" : \"2021-10-02T17:00:00.000Z\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/hospitals/65d9f727423d2640d919b583/appointments/",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"hospitals",
+								"65d9f727423d2640d919b583",
+								"appointments",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update ONE Appt",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Type",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"apptDate\":\"2020-11-11T17:00:00.000+00:00\",\r\n    \"hospital\" : \"65d9f727423d2640d919b584\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/appointments/65da0c460d977cbb66f2f261",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"appointments",
+								"65da0c460d977cbb66f2f261"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete ONE Appt",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/appointments/65da0c460d977cbb66f2f261",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"appointments",
+								"65da0c460d977cbb66f2f261"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "URL",
+			"value": "http://sw-env-1.eba-94m2ykpe.us-east-1.elasticbeanstalk.com",
+			"type": "string"
+		},
+		{
+			"key": "TOKEN",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ZDVmNDVkYTBmNTMxNDQyYmJjMWVlNyIsImlhdCI6MTcwOTEwODY4MiwiZXhwIjoxNzExNzAwNjgyfQ.5ZoZp2a58U3xN9Vy36crzX--LZf5Z7yNxL_MvWLsfSQ",
+			"type": "string"
+		}
+	]
+}
