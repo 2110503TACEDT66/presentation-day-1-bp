@@ -16,7 +16,7 @@ dotenv.config({path:'./config/config.env' });
 connectDB();
 
 //Route files
-const hospitals = require('./routes/hospitals');
+const restaurants = require('./routes/restaurants');
 const auth = require('./routes/auth');
 const appointments = require('./routes/appointments');
 
@@ -68,7 +68,7 @@ app.use(mongoSanitize());
 
 
 //Mount routers
-app.use('/api/v1/hospitals',hospitals);
+app.use('/api/v1/restaurants',restaurants);
 app.use('/api/v1/auth',auth);
 app.use('/api/v1/appointments',appointments);
 
