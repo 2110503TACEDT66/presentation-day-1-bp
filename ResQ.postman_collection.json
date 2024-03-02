@@ -1,0 +1,1573 @@
+{
+	"info": {
+		"_postman_id": "cd8a67d4-a786-4ad1-825c-b8aec232e2a6",
+		"name": "ResQ",
+		"description": "Backend API for reserving restaurants.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33075262"
+	},
+	"item": [
+		{
+			"name": "Restaurants",
+			"item": [
+				{
+					"name": "User Get All Restaurants",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"const response = pm.response.json();\r",
+									"console.log(response);\r",
+									"\r",
+									"pm.test(\"There are some restaurants!!\", () => {\r",
+									"    pm.expect(response.count).to.be.above(0);\r",
+									"});\r",
+									"\r",
+									"postman.setNextRequest(\"User Create Reservation\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/v1/restaurants",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"restaurants"
+							]
+						},
+						"description": "Fetch all hospitals from database."
+					},
+					"response": []
+				},
+				{
+					"name": "User Get One Restaurants",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/v1/restaurants/:restaurant_ID",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"restaurants",
+								":restaurant_ID"
+							],
+							"variable": [
+								{
+									"key": "restaurant_ID",
+									"value": ""
+								}
+							]
+						},
+						"description": "\nThis endpoint retrieves information about a specific hospital with the ID 1. The response will be in JSON format with a success status and an optional message.\n\n### Request\n\n- Method: GET\n- URL: `localhost:5000/api/v1/hospitals/1`\n\n### Response\n\n- Status: 200\n- Content-Type: application/json\n- Body:\n  ```json\n  {\n      \"success\": true,\n      \"msg\": \"\"\n  }\n  ```\n"
+					},
+					"response": []
+				},
+				{
+					"name": "Admin Create Restaurant",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"const response = pm.response.json();\r",
+									"const new_restaurant_id = response.data.id;\r",
+									"\r",
+									"// console.log(new_restaurant);\r",
+									"pm.globals.set(\"global_restaurant_ID\",new_restaurant_id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Type",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\" : \"{{$randomFullName}}\" ,\r\n    \"address\" : \"Hospital\",\r\n    \"district\": \"Hacker\",\r\n    \"province\": \"Nonthaburi\",\r\n    \"postalcode\" : \"10110\",\r\n    \"tel\" : \"02-8369999\",\r\n    \"region\" : \"กรุงเทพมหานคร (Bangkok)\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/restaurants",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"restaurants"
+							]
+						},
+						"description": "This endpoint allows you to create a new hospital by sending a POST request to the specified URL. Upon successful execution, the endpoint returns a JSON response with a status code of 200, indicating that the hospital addition was successful.\n\nThe response body includes a \"success\" key, which will be true if the operation was successful, and an empty \"msg\" key.\n\nExample:\n\n``` json\n{\n  \"success\": true,\n  \"msg\": \"\"\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Admin Update Restaurant",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Type",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"World Medical\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/restaurants/:restaurant_ID",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"restaurants",
+								":restaurant_ID"
+							],
+							"variable": [
+								{
+									"key": "restaurant_ID",
+									"value": ""
+								}
+							]
+						},
+						"description": "This endpoint allows you to update the details of a specific hospital by sending an HTTP PUT request to the specified URL. Upon a successful execution, the server returns a JSON response with a status code of 200, along with a \"success\" boolean indicating the success status and an optional \"msg\" field for any additional message."
+					},
+					"response": []
+				},
+				{
+					"name": "Admin Delete Restaurant",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/v1/restaurants/:restaurant_ID",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"restaurants",
+								":restaurant_ID"
+							],
+							"variable": [
+								{
+									"key": "restaurant_ID",
+									"value": ""
+								}
+							]
+						},
+						"description": "\n# Hospital Deletion\nThis endpoint sends an HTTP DELETE request to localhost:5000/api/v1/hospitals/1 to delete a hospital with the ID 1.\n\n### Response\n- Status: 200\n- Content-Type: application/json\n- Body:\n  ```json\n  {\n      \"success\": true,\n      \"msg\": \"\"\n  }\n  ```\n  The response indicates the success of the deletion operation with the \"success\" field set to true.\n"
+					},
+					"response": []
+				}
+			],
+			"description": "Hospital CRUD functionality"
+		},
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "User Register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var schema = {\r",
+									"    type: \"object\",\r",
+									"    properties: {\r",
+									"        success: {\r",
+									"            type: \"boolean\"\r",
+									"        },\r",
+									"        token: {\r",
+									"            type: \"string\"\r",
+									"        }\r",
+									"    },\r",
+									"    required: [\r",
+									"        \"success\",\r",
+									"        \"token\"\r",
+									"    ]\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test('Schema validation', () => {\r",
+									"  pm.response.to.have.jsonSchema(schema);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Request must be successful\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.success).to.eql(true);\r",
+									"});\r",
+									"\r",
+									"var template = `\r",
+									"    <table bgcolor=\"#FFFFFF\">\r",
+									"        <tr>\r",
+									"            <th>Email</th>\r",
+									"            <th>Password</th>\r",
+									"        </tr>\r",
+									"\r",
+									"        <tr>\r",
+									"            <td>{{request.email}}</td>\r",
+									"            <td>{{request.password}}</td>\r",
+									"        </tr>\r",
+									"    </table>\r",
+									"`;\r",
+									"\r",
+									"var request = JSON.parse(pm.request.body.raw);\r",
+									"\r",
+									"// Set visualizer\r",
+									"pm.visualizer.set(template, {\r",
+									"    // Pass the response body parsed as JSON as `data`\r",
+									"    request: request,\r",
+									"    response: pm.response.json()\r",
+									"});\r",
+									"\r",
+									"pm.environment.set(\"email\", request.email);\r",
+									"pm.environment.set(\"password\", request.password);\r",
+									"pm.environment.set(\"TOKEN\",pm.response.json().token);\r",
+									"\r",
+									"postman.setNextRequest(\"User Login\");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Type",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"{{$randomFullName}}\",\r\n    \"tel\": \"0987654321\",\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"password\": \"{{$randomPassword}}\",\r\n    \"role\" : \"user\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/auth/register",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var schema = {\r",
+									"    type: \"object\",\r",
+									"    properties: {\r",
+									"        success: {\r",
+									"            type: \"boolean\"\r",
+									"        },\r",
+									"        token: {\r",
+									"            type: \"string\"\r",
+									"        }\r",
+									"    },\r",
+									"    required: [\r",
+									"        \"success\",\r",
+									"        \"token\"\r",
+									"    ]\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Schema\", function () {\r",
+									"    pm.expect(pm.response.to.have.jsonSchema(schema));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Schema\", function () {\r",
+									"    pm.expect(pm.response.to.have.jsonSchema(schema));\r",
+									"});\r",
+									"\r",
+									"pm.environment.set(\"TOKEN\",pm.response.json().token);\r",
+									"\r",
+									"postman.setNextRequest(\"Get Logged In User with Token\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Type",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\" : \"{{email}}\",\r\n    \"password\" : \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/auth/login",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Logged In User with Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var userSchema = {\r",
+									"    type: \"object\",\r",
+									"    properties: {\r",
+									"        _id: {\r",
+									"            type: \"string\"\r",
+									"        },\r",
+									"        name: {\r",
+									"            type: \"string\"\r",
+									"        },\r",
+									"        email: {\r",
+									"            type: \"string\"\r",
+									"        },\r",
+									"        role: {\r",
+									"            type: \"string\"\r",
+									"        }\r",
+									"    },\r",
+									"    required: [\r",
+									"        \"_id\",\r",
+									"        \"name\",\r",
+									"        \"email\",\r",
+									"        \"role\"\r",
+									"    ]\r",
+									"};\r",
+									"\r",
+									"var schema = {\r",
+									"    type: \"object\",\r",
+									"    properties: {\r",
+									"        success: {\r",
+									"            type: \"boolean\"\r",
+									"        },\r",
+									"        data: userSchema\r",
+									"    },\r",
+									"    required: [\r",
+									"        \"success\",\r",
+									"        \"data\"\r",
+									"    ]\r",
+									"};\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test('Schema validation', () => {\r",
+									"  pm.response.to.have.jsonSchema(schema);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Request must be successful\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.success).to.eql(true);\r",
+									"});\r",
+									"\r",
+									"postman.setNextRequest(\"User Get All Restaurants\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Type",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ZDVmNDVkYTBmNTMxNDQyYmJjMWVlNyIsImlhdCI6MTcwODUyMjU5MiwiZXhwIjoxNzExMTE0NTkyfQ.V9m8eyW6hoZLkbmuFxotWN7pYjOg7A927tD8Ylq_2FM",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/api/v1/auth/me",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Logout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var requestData = {\r",
+									"    \"success\": true,\r",
+									"    \"data\": {}\r",
+									"};\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"JSON Data\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.eql(requestData);\r",
+									"});\r",
+									"\r",
+									"pm.environment.set(\"TOKEN\",null);\r",
+									"\r",
+									"postman.setNextRequest(\"Admin Login\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/v1/auth/logout",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Admin Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var schema = {\r",
+									"    type: \"object\",\r",
+									"    properties: {\r",
+									"        success: {\r",
+									"            type: \"boolean\"\r",
+									"        },\r",
+									"        token: {\r",
+									"            type: \"string\"\r",
+									"        }\r",
+									"    },\r",
+									"    required: [\r",
+									"        \"success\",\r",
+									"        \"token\"\r",
+									"    ]\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Schema\", function () {\r",
+									"    pm.expect(pm.response.to.have.jsonSchema(schema));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Schema\", function () {\r",
+									"    pm.expect(pm.response.to.have.jsonSchema(schema));\r",
+									"});\r",
+									"\r",
+									"pm.environment.set(\"TOKEN\",pm.response.json().token);\r",
+									"\r",
+									"postman.setNextRequest(\"Admin Get All Reservations\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Type",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\" : \"john@gmail.com\",\r\n    \"password\" : \"12345678\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/auth/login",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Reservations",
+			"item": [
+				{
+					"name": "User Get All Reservations",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"\r",
+									"postman.setNextRequest(\"User Get One Reservation\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/v1/reservations",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"reservations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Get One Reservation",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									"\r",
+									"postman.setNextRequest(\"User Update Reservation\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/v1/reservations/:reservation_ID",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"reservations",
+								":reservation_ID"
+							],
+							"variable": [
+								{
+									"key": "reservation_ID",
+									"value": "{{global_reservation_ID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Create Reservation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"\r",
+									"postman.setNextRequest(\"User Create Reservation (Second)\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Type",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"apptDate\" : \"2021-10-02T17:00:00.000Z\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/restaurants/:restaurant_ID/reservations/",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"restaurants",
+								":restaurant_ID",
+								"reservations",
+								""
+							],
+							"variable": [
+								{
+									"key": "restaurant_ID",
+									"value": "{{global_restaurant_ID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Create Reservation (Second)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"\r",
+									"postman.setNextRequest(\"User Create Reservation (Third)\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Type",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"apptDate\" : \"2021-10-02T17:00:00.000Z\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/restaurants/:restaurant_ID/reservations/",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"restaurants",
+								":restaurant_ID",
+								"reservations",
+								""
+							],
+							"variable": [
+								{
+									"key": "restaurant_ID",
+									"value": "{{global_restaurant_ID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Create Reservation (Third)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"\r",
+									"postman.setNextRequest(\"User Create Reservation (Invalid)\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Type",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"apptDate\" : \"2021-10-02T17:00:00.000Z\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/restaurants/:restaurant_ID/reservations/",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"restaurants",
+								":restaurant_ID",
+								"reservations",
+								""
+							],
+							"variable": [
+								{
+									"key": "restaurant_ID",
+									"value": "{{global_restaurant_ID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Create Reservation (Invalid)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"\r",
+									"postman.setNextRequest(\"User Get All Reservations\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Type",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"apptDate\" : \"2021-10-02T17:00:00.000Z\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/restaurants/:restaurant_ID/reservations/",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"restaurants",
+								":restaurant_ID",
+								"reservations",
+								""
+							],
+							"variable": [
+								{
+									"key": "restaurant_ID",
+									"value": "{{global_restaurant_ID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Create Reservation (Before Logout)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"\r",
+									"postman.setNextRequest(\"User Logout\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Type",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"apptDate\" : \"2021-10-02T17:00:00.000Z\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/restaurants/:restaurant_ID/reservations/",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"restaurants",
+								":restaurant_ID",
+								"reservations",
+								""
+							],
+							"variable": [
+								{
+									"key": "restaurant_ID",
+									"value": "{{global_restaurant_ID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Update Reservation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"\r",
+									"postman.setNextRequest(\"User Delete Reservation\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Type",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"apptDate\":\"2020-11-11T17:00:00.000+00:00\",\r\n    \"hospital\" : \"65d9f727423d2640d919b584\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/reservations/:reservation_ID",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"reservations",
+								":reservation_ID"
+							],
+							"variable": [
+								{
+									"key": "reservation_ID",
+									"value": "{{global_reservation_ID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Delete Reservation",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									"\r",
+									"postman.setNextRequest(\"User Create Reservation (Before Logout)\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/reservations/:reservation_ID",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"reservations",
+								":reservation_ID"
+							],
+							"variable": [
+								{
+									"key": "reservation_ID",
+									"value": "{{global_reservation_ID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Admin Get All Reservations",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"\r",
+									"postman.setNextRequest(\"Admin Get One Reservation\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/v1/reservations",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"reservations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Admin Get One Reservation",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									"\r",
+									"postman.setNextRequest(\"Admin Get One Reservation for Hospital\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/v1/reservations/:reservation_ID",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"reservations",
+								":reservation_ID"
+							],
+							"variable": [
+								{
+									"key": "reservation_ID",
+									"value": "{{global_reservation_ID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Admin Get One Reservation for Hospital",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"\r",
+									"postman.setNextRequest(\"Admin Update Reservation\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/v1/restaurants/:restaurant_ID/reservations",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"restaurants",
+								":restaurant_ID",
+								"reservations"
+							],
+							"variable": [
+								{
+									"key": "restaurant_ID",
+									"value": "{{global_restaurant_ID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Admin Update Reservation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"\r",
+									"postman.setNextRequest(\"Admin Delete Reservation\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Type",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"apptDate\":\"2020-11-11T17:00:00.000+00:00\",\r\n    \"hospital\" : \"65d9f727423d2640d919b584\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/reservations/:reservation_ID",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"reservations",
+								":reservation_ID"
+							],
+							"variable": [
+								{
+									"key": "reservation_ID",
+									"value": "{{global_reservation_ID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Admin Delete Reservation",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									"\r",
+									"postman.setNextRequest(\"User Create Reservation (Before Logout)\");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"\r",
+									"postman.setNextRequest(null);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/reservations/:reservation_ID",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"reservations",
+								":reservation_ID"
+							],
+							"variable": [
+								{
+									"key": "reservation_ID",
+									"value": "{{global_reservation_ID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "URL",
+			"value": "http://sw-env-1.eba-94m2ykpe.us-east-1.elasticbeanstalk.com",
+			"type": "string"
+		},
+		{
+			"key": "TOKEN",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ZDVmNDVkYTBmNTMxNDQyYmJjMWVlNyIsImlhdCI6MTcwOTEwODY4MiwiZXhwIjoxNzExNzAwNjgyfQ.5ZoZp2a58U3xN9Vy36crzX--LZf5Z7yNxL_MvWLsfSQ",
+			"type": "string"
+		}
+	]
+}
