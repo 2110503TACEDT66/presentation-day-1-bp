@@ -1,4 +1,3 @@
-const exp = require('constants');
 const User = require('../models/User');
 
 // Get token from model, create cookie and send response
