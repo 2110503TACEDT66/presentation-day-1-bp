@@ -183,7 +183,7 @@ const {
 } = require("../controllers/restaurants");
 
 // Include other resource routers
-const appointmentRouter = require("./appointments");
+const appointmentRouter = require("./reservations");
 
 const router = express.Router();
 

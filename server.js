@@ -18,7 +18,7 @@ connectDB();
 //Route files
 const restaurants = require('./routes/restaurants');
 const auth = require('./routes/auth');
-const appointments = require('./routes/appointments');
+const appointments = require('./routes/reservations');
 
 const app=express();
 
