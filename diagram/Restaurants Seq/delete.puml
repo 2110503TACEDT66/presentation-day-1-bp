@@ -1,6 +1,6 @@
 @startuml Manage Restaurant (DELETE)
 
-header Sample VacQ Sequence Diagram
+header Sample ResQ Sequence Diagram
 footer Page %page% of %lastpage%
 title "Manage Restaurant (DELETE)"
 
