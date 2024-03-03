@@ -5,7 +5,7 @@ rectangle "Restaurant Reservation System" as RestaurantSystem {
     usecase "Register" as register
     usecase "View\nRestaurants" as viewRestaurants
     usecase "Manage\nReservation" as manageResv
-    usecase "Manage\nRestaurant" as manageRestaurant
+    usecase "Manage\nRestaurants" as manageRestaurant
 }
 
 user -- register
@@ -14,6 +14,7 @@ user -- manageResv
 
 actor "Admin" as admin
 register -- admin
+viewRestaurants -- admin
 manageRestaurant -- admin
 manageResv -- admin
 
