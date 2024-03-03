@@ -1,10 +1,10 @@
 {
 	"info": {
-		"_postman_id": "cd8a67d4-a786-4ad1-825c-b8aec232e2a6",
+		"_postman_id": "67498a51-34d7-45f7-903e-aae4b4876563",
 		"name": "ResQ",
 		"description": "Backend API for reserving restaurants.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "33075262"
+		"_exporter_id": "29523471"
 	},
 	"item": [
 		{
@@ -28,7 +28,55 @@
 									"    pm.expect(response.count).to.be.above(0);\r",
 									"});\r",
 									"\r",
-									"postman.setNextRequest(\"User Create Reservation\");"
+									"postman.setNextRequest(\"User Create Reservation\");\r",
+									"pm.test(\"Schema is valid\", function () {\r",
+									"  var schema = {\r",
+									"    type: \"object\",\r",
+									"    properties: {\r",
+									"      success: { type: \"boolean\" },\r",
+									"      count: { type: \"number\" },\r",
+									"      pagination: {\r",
+									"        type: \"object\",\r",
+									"        properties: {\r",
+									"          next: {\r",
+									"            type: \"object\",\r",
+									"            properties: {\r",
+									"              page: { type: \"number\" },\r",
+									"              limit: { type: \"number\" }\r",
+									"            },\r",
+									"            required: [\"page\", \"limit\"]\r",
+									"          }\r",
+									"        },\r",
+									"        required: [\"next\"]\r",
+									"      },\r",
+									"      data: {\r",
+									"        type: \"array\",\r",
+									"        items: {\r",
+									"          type: \"object\",\r",
+									"          properties: {\r",
+									"            _id: { type: \"string\" },\r",
+									"            ลำดับ: { type: \"number\" },\r",
+									"            name: { type: \"string\" },\r",
+									"            address: { type: \"string\" },\r",
+									"            district: { type: \"string\" },\r",
+									"            province: { type: \"string\" },\r",
+									"            postalcode: { type: \"string\" },\r",
+									"            tel: { type: \"string\" },\r",
+									"            region: { type: \"string\" },\r",
+									"            reservations: { type: \"array\" },\r",
+									"            id: { type: \"string\" }\r",
+									"          },\r",
+									"          required: [\"_id\", \"ลำดับ\", \"name\", \"address\", \"district\", \"province\", \"postalcode\", \"tel\", \"region\", \"reservations\", \"id\"]\r",
+									"        }\r",
+									"      }\r",
+									"    },\r",
+									"    required: [\"success\", \"count\", \"pagination\", \"data\"]\r",
+									"  };\r",
+									"\r",
+									"  var response = pm.response.json();\r",
+									"  pm.expect(tv4.validate(response, schema)).to.be.true;\r",
+									"});\r",
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -61,7 +109,42 @@
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
-									"});"
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 3000ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(3000);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Schema is valid\", function () {\r",
+									"  var schema = {\r",
+									"    type: \"object\",\r",
+									"    properties: {\r",
+									"      success: { type: \"boolean\" },\r",
+									"      msg: { type: \"string\" },\r",
+									"      data: {\r",
+									"        type: \"object\",\r",
+									"        properties: {\r",
+									"          _id: { type: \"string\" },\r",
+									"          ลำดับ: { type: \"number\" },\r",
+									"          name: { type: \"string\" },\r",
+									"          address: { type: \"string\" },\r",
+									"          district: { type: \"string\" },\r",
+									"          province: { type: \"string\" },\r",
+									"          postalcode: { type: \"string\" },\r",
+									"          tel: { type: \"string\" },\r",
+									"          region: { type: \"string\" },\r",
+									"          id: { type: \"string\" }\r",
+									"        },\r",
+									"        required: [\"_id\", \"ลำดับ\", \"name\", \"address\", \"district\", \"province\", \"postalcode\", \"tel\", \"region\", \"id\"]\r",
+									"      }\r",
+									"    },\r",
+									"    required: [\"success\", \"data\"]\r",
+									"  };\r",
+									"\r",
+									"  var response = pm.response.json();\r",
+									"  pm.expect(tv4.validate(response, schema)).to.be.true;\r",
+									"});\r",
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -84,7 +167,7 @@
 							"variable": [
 								{
 									"key": "restaurant_ID",
-									"value": ""
+									"value": "{{global_restaurant_ID}}"
 								}
 							]
 						},
@@ -107,7 +190,32 @@
 									"const new_restaurant_id = response.data.id;\r",
 									"\r",
 									"// console.log(new_restaurant);\r",
-									"pm.globals.set(\"global_restaurant_ID\",new_restaurant_id);"
+									"pm.globals.set(\"global_restaurant_ID\",new_restaurant_id);\r",
+									"\r",
+									"pm.test(\"Response body structure is valid\", function () {\r",
+									"    var responseJSON = pm.response.json();\r",
+									"    pm.expect(responseJSON).to.be.an('object');\r",
+									"    pm.expect(responseJSON).to.have.property('success');\r",
+									"    pm.expect(responseJSON.success).to.be.true;\r",
+									"    pm.expect(responseJSON).to.have.property('data');\r",
+									"    pm.expect(responseJSON.data).to.be.an('object');\r",
+									"    pm.expect(responseJSON.data).to.have.property('name');\r",
+									"    pm.expect(responseJSON.data).to.have.property('address');\r",
+									"    pm.expect(responseJSON.data).to.have.property('district');\r",
+									"    pm.expect(responseJSON.data).to.have.property('province');\r",
+									"    pm.expect(responseJSON.data).to.have.property('postalcode');\r",
+									"    pm.expect(responseJSON.data).to.have.property('tel');\r",
+									"    pm.expect(responseJSON.data).to.have.property('region');\r",
+									"    pm.expect(responseJSON.data).to.have.property('_id');\r",
+									"    pm.expect(responseJSON.data).to.have.property('__v');\r",
+									"    pm.expect(responseJSON.data).to.have.property('id');\r",
+									"});\r",
+									"\r",
+									"postman.setNextRequest(\"Admin Update Restaurant\");\r",
+									"// Test for response time\r",
+									"pm.test(\"Response time is within acceptable range\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(3000); // Adjust the acceptable range as per the application's performance\r",
+									"});"
 								],
 								"type": "text/javascript"
 							}
@@ -135,7 +243,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\" : \"{{$randomFullName}}\" ,\r\n    \"address\" : \"Hospital\",\r\n    \"district\": \"Hacker\",\r\n    \"province\": \"Nonthaburi\",\r\n    \"postalcode\" : \"10110\",\r\n    \"tel\" : \"02-8369999\",\r\n    \"region\" : \"กรุงเทพมหานคร (Bangkok)\"\r\n}",
+							"raw": "{\r\n    \"name\" : \"{{$randomFullName}}\" ,\r\n    \"address\" : \"Restaurant\",\r\n    \"district\": \"Not Hacker\",\r\n    \"province\": \"Nonthaburi\",\r\n    \"postalcode\" : \"10110\",\r\n    \"tel\" : \"02-8369999\",\r\n    \"region\" : \"กรุงเทพมหานคร (Bangkok)\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -166,6 +274,25 @@
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"postman.setNextRequest(\"Admin Delete Restaurant\");\r",
+									"pm.test(\"Response body has the correct schema\", function () {\r",
+									"    var schema = {\r",
+									"        type: \"object\",\r",
+									"        properties: {\r",
+									"            success: {\r",
+									"                type: \"boolean\"\r",
+									"            },\r",
+									"            msg: {\r",
+									"                type: \"string\"\r",
+									"            }\r",
+									"        },\r",
+									"        required: [\"success\"]\r",
+									"    };\r",
+									"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;\r",
+									"});\r",
+									"pm.test(\"Response time is within acceptable range\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(3000);\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -194,7 +321,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"World Medical\"\r\n}",
+							"raw": "{\r\n    \"name\": \"World Food\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -215,7 +342,7 @@
 							"variable": [
 								{
 									"key": "restaurant_ID",
-									"value": ""
+									"value": "{{global_restaurant_ID}}"
 								}
 							]
 						},
@@ -232,6 +359,27 @@
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Schema is valid\", function () {\r",
+									"  var schema = {\r",
+									"    type: \"object\",\r",
+									"    properties: {\r",
+									"      success: {\r",
+									"        type: \"boolean\"\r",
+									"      },\r",
+									"      msg: {\r",
+									"        type: \"string\"\r",
+									"      }\r",
+									"    },\r",
+									"    required: [\"success\", \"data\"],\r",
+									"  };\r",
+									"\r",
+									"  var response = pm.response.json();\r",
+									"  pm.expect(tv4.validate(response, schema)).to.be.true;\r",
+									"});\r",
+									"// Test for response time within acceptable range\r",
+									"pm.test(\"Response time is less than 3000ms\", function () {\r",
+									"  pm.expect(pm.response.responseTime).to.be.below(3000);\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -265,7 +413,7 @@
 							"variable": [
 								{
 									"key": "restaurant_ID",
-									"value": ""
+									"value": "{{global_restaurant_ID}}"
 								}
 							]
 						},
@@ -422,9 +570,8 @@
 									"    pm.expect(pm.response.to.have.jsonSchema(schema));\r",
 									"});\r",
 									"\r",
-									"pm.test(\"Request must be successful\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.success).to.eql(true);\r",
+									"pm.test(\"Schema\", function () {\r",
+									"    pm.expect(pm.response.to.have.jsonSchema(schema));\r",
 									"});\r",
 									"\r",
 									"pm.environment.set(\"TOKEN\",pm.response.json().token);\r",
