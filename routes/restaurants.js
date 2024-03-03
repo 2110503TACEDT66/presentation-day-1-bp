@@ -179,18 +179,17 @@ const {
   createRestaurant,
   updateRestaurant,
   deleteRestaurant,
-  getVacCenters,
 } = require("../controllers/restaurants");
 
 // Include other resource routers
-const appointmentRouter = require("./reservations");
+const reservationsRouter = require("./reservations");
 
 const router = express.Router();
 
 const { protect, authorize } = require("../middleware/auth");
 
 // Re-route into other resource routers
-router.use("/:restaurantId/appointments", appointmentRouter);
+router.use("/:restaurantId/reservations", reservationsRouter);
 
 router
   .route("/")
