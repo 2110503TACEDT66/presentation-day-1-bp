@@ -25,7 +25,7 @@ exports.getRestaurants = async (req, res, next) => {
     );
 
     // Finding resource
-    query = Restaurant.find(JSON.parse(queryStr)).populate(`appointments`);
+    query = Restaurant.find(JSON.parse(queryStr)).populate(`reservations`);
 
     // Select Fields
     if (req.query.select) {

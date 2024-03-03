@@ -37,16 +37,16 @@ const RestaurantSchema = new mongoose.Schema({
     toObject : {virtuals : true}
 });
 
-// Cascade delete appointments when a restaurant is deleted
+// Cascade delete reservations when a restaurant is deleted
 RestaurantSchema.pre('deleteOne',{document:true,query:false} ,async function(next){
-    console.log(`Appointments being removed from restaurant ${this._id}`);
-    await this.model('Appointment').deleteMany({restaurant : this._id});
+    console.log(`Reservations being removed from restaurant ${this._id}`);
+    await this.model('Reservation').deleteMany({restaurant : this._id});
     next();
 });
 
 // Reverse populate with virtuals
-RestaurantSchema.virtual('appointments', {
-    ref: 'Appointment',
+RestaurantSchema.virtual('reservations', {
+    ref: 'Reservation',
     localField: '_id',
     foreignField: 'restaurant',
     justOne: false
