@@ -1,5 +1,5 @@
 @startuml
-top to bottom direction
+left to right direction
 package "Restaurant System" {
     class "<<Application>>\nResQService" as ResQService {}
 
@@ -52,6 +52,8 @@ package "Restaurant System" {
 
     class "<<Representation>>\nReservation" as RepresentationReservation {
         -apptDate
+        -user
+        -hospital
         -createdAt
     }
 }
@@ -66,4 +68,7 @@ ResourceRestaurant ..> RepresentationRestaurant : "<<use>>"
 ResQService ..> ResourceReservations : "/reservations\n<<Path>>"
 ResourceReservations ..> ResourceReservation : "/{reservationId}\n<<Path>>"
 ResourceReservation ..> RepresentationReservation : "<<use>>"
+
+RepresentationUser ..> RepresentationReservation : "makes"
+RepresentationRestaurant ..> RepresentationReservation : "hosts"
 @enduml
