@@ -1,10 +1,10 @@
 {
 	"info": {
-		"_postman_id": "3a24266e-0f00-4c68-bf6b-853ba50641f6",
+		"_postman_id": "147e270a-f5dc-44c1-baf6-322e49c900de",
 		"name": "ResQ",
 		"description": "Backend API for reserving restaurants.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "29524661"
+		"_exporter_id": "33075262"
 	},
 	"item": [
 		{
@@ -570,8 +570,9 @@
 									"    pm.expect(pm.response.to.have.jsonSchema(schema));\r",
 									"});\r",
 									"\r",
-									"pm.test(\"Schema\", function () {\r",
-									"    pm.expect(pm.response.to.have.jsonSchema(schema));\r",
+									"pm.test(\"Request must be successful\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.success).to.eql(true);\r",
 									"});\r",
 									"\r",
 									"pm.environment.set(\"TOKEN\",pm.response.json().token);\r",
@@ -808,8 +809,9 @@
 									"    pm.expect(pm.response.to.have.jsonSchema(schema));\r",
 									"});\r",
 									"\r",
-									"pm.test(\"Schema\", function () {\r",
-									"    pm.expect(pm.response.to.have.jsonSchema(schema));\r",
+									"pm.test(\"Request must be successful\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.success).to.eql(true);\r",
 									"});\r",
 									"\r",
 									"pm.environment.set(\"TOKEN\",pm.response.json().token);\r",
@@ -1894,7 +1896,7 @@
 								"exec": [
 									"\r",
 									"\r",
-									"postman.setNextRequest(\"Admin Get One Reservation for Hospital\");"
+									"postman.setNextRequest(\"Admin Get One Reservation for Restaurant\");"
 								],
 								"type": "text/javascript"
 							}
