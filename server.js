@@ -6,6 +6,7 @@ const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
 const {xss} = require('express-xss-sanitizer');
 const rateLimit = require('express-rate-limit');
+const cors = require('cors');
 
 //Load env vars
 dotenv.config({path:'./config/config.env' });
@@ -42,6 +43,9 @@ app.use(cookieParser());
 
 // Sanitize data
 app.use(mongoSanitize());
+
+// Use CORS
+app.use(cors());
 
 
 
